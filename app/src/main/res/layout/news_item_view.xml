@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="15dp">
+
+
+    <TextView
+        android:id="@+id/news_title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Title of the news retrieved from the server dsfsfdsfsd" />
+
+    <TextView
+        android:id="@+id/news_author_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Fulano de Tal" />
+
+    <TextView
+        android:id="@+id/news_date_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Feb, 2 2018 14:12" />
+
+    <TextView
+        android:id="@+id/news_section_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="Opinions" />
+
+
+</LinearLayout>
