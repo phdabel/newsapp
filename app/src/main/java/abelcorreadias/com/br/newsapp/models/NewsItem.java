@@ -11,14 +11,16 @@ public class NewsItem implements Serializable {
     private String author;
     private Date date;
     private String section;
+    private String url;
 
     public NewsItem(){}
 
-    public NewsItem(String title, String author, Date date, String section){
+    public NewsItem(String title, String author, Date date, String section, String url){
         this.setTitle(title);
         this.setAuthor(author);
         this.setDate(date);
         this.setSection(section);
+        this.setUrl(url);
     }
 
     public String getTitle() {
@@ -53,6 +55,14 @@ public class NewsItem implements Serializable {
         this.section = section;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String toString(){
         return TAG+"{" +
                 "title='" + this.title + "'" +
@@ -61,4 +71,5 @@ public class NewsItem implements Serializable {
                 "section='" + this.section + "'" +
                 "}";
     }
+
 }
