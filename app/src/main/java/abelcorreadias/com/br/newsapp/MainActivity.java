@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         }else{
             progressBar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
-            emptyStateTextView.setText(R.string.no_news_found);
+            emptyStateTextView.setText(R.string.no_internet_connection);
         }
     }
 
