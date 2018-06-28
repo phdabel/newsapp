@@ -15,7 +15,15 @@ import abelcorreadias.com.br.newsapp.models.NewsItem;
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.ViewHolder> {
 
+    public interface OnItemClickListener {
+
+        void onItemClick(NewsItem item);
+
+    }
+
     private List<NewsItem> dataset;
+
+    private OnItemClickListener listener;
 
     public NewsRecyclerAdapter(List<NewsItem> dataset){
         this.dataset = dataset;
@@ -35,6 +43,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         holder.author.setText(this.dataset.get(position).getAuthor());
         holder.date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(this.dataset.get(position).getDate()));
         holder.section.setText(this.dataset.get(position).getSection());
+        holder.bind(dataset.get(position), listener);
     }
 
     @Override
@@ -56,6 +65,19 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             this.date = (TextView) itemView.findViewById(R.id.news_date_text_view);
             this.section = (TextView) itemView.findViewById(R.id.news_section_text_view);
         }
+
+        public void bind(final NewsItem item, final OnItemClickListener listener){
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v){
+                    listener.onItemClick(item);
+                }
+            });
+        }
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener){
+        this.listener = listener;
     }
 
 }

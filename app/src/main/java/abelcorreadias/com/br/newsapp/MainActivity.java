@@ -2,13 +2,16 @@ package abelcorreadias.com.br.newsapp;
 
 import android.app.LoaderManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -78,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             recyclerView.setVisibility(View.GONE);
             emptyStateTextView.setText(R.string.no_news_found);
         }
-
     }
 
     @Override
@@ -93,6 +95,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         emptyStateTextView.setText(R.string.no_news_found);
         if(data != null && !data.isEmpty()){
             adapter = new NewsRecyclerAdapter(data);
+            adapter.setOnItemClickListener(new NewsRecyclerAdapter.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(NewsItem item) {
+                    Uri uri = Uri.parse(item.getUrl());
+                    Intent siteIntent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(siteIntent);
+                }
+
+            });
         }
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
