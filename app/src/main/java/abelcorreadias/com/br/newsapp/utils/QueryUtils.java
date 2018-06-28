@@ -114,18 +114,16 @@ public final class QueryUtils {
             for(int i = 0; i < results.length(); i++){
                 JSONObject news = results.getJSONObject(i);
                 String titleAuthorProperty = news.getString("webTitle");
-                String[] titleAuthor = titleAuthorProperty.split("|");
                 String title;
                 String author = null;
-                title = titleAuthorProperty;
-                /*if(titleAuthor.length > 1){
-                    title = titleAuthor[0];
-                    author = titleAuthor[1];
+                if(titleAuthorProperty.contains("|")){
+                    String[] titleAuthor = titleAuthorProperty.split("[|]");
+                    title = titleAuthor[0].trim();
+                    author = titleAuthor[1].trim();
                 }else{
                     title = titleAuthorProperty;
-                }*/
-
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                }
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 Date date = format.parse(news.getString("webPublicationDate"));
                 String section = news.getString("sectionName");
                 String url = news.getString("webUrl");

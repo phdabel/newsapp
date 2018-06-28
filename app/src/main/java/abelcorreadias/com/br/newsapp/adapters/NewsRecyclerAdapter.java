@@ -21,7 +21,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         this.dataset = dataset;
     }
 
-
     @Override
     public NewsRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item_view, parent, false);
@@ -34,7 +33,7 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
     public void onBindViewHolder(NewsRecyclerAdapter.ViewHolder holder, int position) {
         holder.title.setText(this.dataset.get(position).getTitle());
         holder.author.setText(this.dataset.get(position).getAuthor());
-        holder.date.setText(new SimpleDateFormat("yyyy-MM-dd").format(this.dataset.get(position).getDate()));
+        holder.date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(this.dataset.get(position).getDate()));
         holder.section.setText(this.dataset.get(position).getSection());
     }
 
@@ -57,7 +56,6 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
             this.date = (TextView) itemView.findViewById(R.id.news_date_text_view);
             this.section = (TextView) itemView.findViewById(R.id.news_section_text_view);
         }
-
     }
 
 }

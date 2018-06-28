@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import abelcorreadias.com.br.newsapp.adapters.NewsRecyclerAdapter;
@@ -24,14 +25,19 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
 
-    private static final String URL_BASE = "http://content.guardianapis.com";
+    private static final String URL_BASE = "http://content.guardianapis.com/";
 
-    private static final String API_KEY = "api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
+    private static final String PATH = "search";
 
-    private static final String QUERY = "q=video-games AND games AND videogames";
+    private static final String API_KEY = "&api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
+
+    private static final String QUERY = "?q=video-games AND games AND videogames";
+
+    // @todo change {p} to the page number
+    private static final String PAGE = "&page={p}";
 
     private static final String NEWS_REQUEST_URL =
-            URL_BASE+"/search?"+QUERY+"&page=1&"+API_KEY;
+            URL_BASE+PATH+QUERY+"&page=22"+API_KEY;
 
 
     private NewsRecyclerAdapter adapter;
@@ -53,12 +59,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
 
         progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
         emptyStateTextView = (TextView) findViewById(R.id.empty_view);
         emptyStateTextView.setText(R.string.no_news_found);
 
-        adapter = new NewsRecyclerAdapter(null);
+        adapter = new NewsRecyclerAdapter(new ArrayList<NewsItem>());
         recyclerView.setAdapter(adapter);
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -87,12 +94,15 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         if(data != null && !data.isEmpty()){
             adapter = new NewsRecyclerAdapter(data);
         }
+        recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void onLoaderReset(Loader<List<NewsItem>> loader) {
-
+        adapter = new NewsRecyclerAdapter(new ArrayList<NewsItem>());
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 }
