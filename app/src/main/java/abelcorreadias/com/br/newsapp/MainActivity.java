@@ -12,8 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -41,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String PAGE = "&page={p}";
 
     private static final String NEWS_REQUEST_URL =
-            URL_BASE+PATH+QUERY+"&page=22"+API_KEY;
-
+            URL_BASE+PATH+QUERY+"&page=1"+API_KEY;
 
     private NewsRecyclerAdapter adapter;
 
@@ -54,8 +56,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView recyclerView;
 
-    private SwipeRefreshLayout refreshLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,15 +64,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-            }
-        });
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -80,6 +72,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
             }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                super.onScrolled(recyclerView, dx, dy);
+                /* @todo make pagination feature */
+                int visibleItemCount = layoutManager.getChildCount();
+                int totalItemCount = layoutManager.getItemCount();
+
+            }
+
         });
 
         progressBar = (ProgressBar) findViewById(R.id.loading_spinner);

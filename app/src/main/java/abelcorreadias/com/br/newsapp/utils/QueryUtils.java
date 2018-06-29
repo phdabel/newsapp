@@ -113,6 +113,7 @@ public final class QueryUtils {
             JSONArray results = ((JSONObject)root.get("response")).getJSONArray("results");
             for(int i = 0; i < results.length(); i++){
                 JSONObject news = results.getJSONObject(i);
+                String id = news.getString("id");
                 String titleAuthorProperty = news.getString("webTitle");
                 String title;
                 String author = null;
@@ -127,7 +128,7 @@ public final class QueryUtils {
                 Date date = format.parse(news.getString("webPublicationDate"));
                 String section = news.getString("sectionName");
                 String url = news.getString("webUrl");
-                newsItems.add(new NewsItem(title, author, date, section, url));
+                newsItems.add(new NewsItem(id, title, author, date, section, url));
             }
 
         }catch(JSONException e){

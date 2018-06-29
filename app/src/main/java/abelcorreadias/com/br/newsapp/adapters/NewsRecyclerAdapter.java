@@ -1,5 +1,6 @@
 package abelcorreadias.com.br.newsapp.adapters;
 
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import abelcorreadias.com.br.newsapp.R;
 import abelcorreadias.com.br.newsapp.models.NewsItem;
+import abelcorreadias.com.br.newsapp.utils.NewsItemDiff;
 
 
 public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapter.ViewHolder> {
@@ -84,6 +87,11 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
                 }
             });
         }
+    }
+
+    public void updateList(ArrayList<NewsItem> newsList){
+        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new NewsItemDiff(this.dataset, newsList));
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){

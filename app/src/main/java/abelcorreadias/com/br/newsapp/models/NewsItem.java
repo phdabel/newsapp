@@ -7,6 +7,7 @@ public class NewsItem implements Serializable {
 
     private static final String TAG = NewsItem.class.getSimpleName();
 
+    private String id;
     private String title;
     private String author;
     private Date date;
@@ -15,12 +16,21 @@ public class NewsItem implements Serializable {
 
     public NewsItem(){}
 
-    public NewsItem(String title, String author, Date date, String section, String url){
+    public NewsItem(String id, String title, String author, Date date, String section, String url){
+        this.setId(id);
         this.setTitle(title);
         this.setAuthor(author);
         this.setDate(date);
         this.setSection(section);
         this.setUrl(url);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -65,10 +75,12 @@ public class NewsItem implements Serializable {
 
     public String toString(){
         return TAG+"{" +
+                "id='" + this.id + "'" +
                 "title='" + this.title + "'" +
                 "author='" + this.author + "'" +
                 "date'" + this.date.toString() + "'" +
                 "section='" + this.section + "'" +
+                "url='" + this.url + "'" +
                 "}";
     }
 
