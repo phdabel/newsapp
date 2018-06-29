@@ -37,6 +37,16 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
         return vh;
     }
 
+    public void clear(){
+        this.dataset.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<NewsItem> list){
+        this.dataset.addAll(list);
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(NewsRecyclerAdapter.ViewHolder holder, int position) {
         holder.title.setText(this.dataset.get(position).getTitle());

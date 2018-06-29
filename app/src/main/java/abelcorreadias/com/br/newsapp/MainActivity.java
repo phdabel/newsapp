@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -53,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView recyclerView;
 
+    private SwipeRefreshLayout refreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +64,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh_layout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+            }
+        });
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+        });
 
         progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
         emptyStateTextView = (TextView) findViewById(R.id.empty_view);
