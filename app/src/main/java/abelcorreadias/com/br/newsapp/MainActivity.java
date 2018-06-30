@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private static final String PATH = "search";
 
+    private static final String CONTRIBUTOR = "&show-tags=contributor";
+
     private static final String API_KEY = "&api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
 
     private static final String QUERY = "?q=video-games AND games AND videogames";
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String PAGE = "&page={p}";
 
     private static final String NEWS_REQUEST_URL =
-            URL_BASE+PATH+QUERY+"&page=1"+API_KEY;
+            URL_BASE+PATH+QUERY+CONTRIBUTOR+"&page=1"+API_KEY;
 
     private NewsRecyclerAdapter adapter;
 
