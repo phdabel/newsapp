@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import abelcorreadias.com.br.newsapp.adapters.NewsRecyclerAdapter;
+import abelcorreadias.com.br.newsapp.listeners.EndlessRecyclerViewScrollListener;
 import abelcorreadias.com.br.newsapp.loaders.NewsLoader;
 import abelcorreadias.com.br.newsapp.models.NewsItem;
 import abelcorreadias.com.br.newsapp.utils.QueryUtils;
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private RecyclerView recyclerView;
 
+    private EndlessRecyclerViewScrollListener scrollListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,22 +72,14 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        this.scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
-                super.onScrolled(recyclerView, dx, dy);
-                /* @todo make pagination feature */
-                int visibleItemCount = layoutManager.getChildCount();
-                int totalItemCount = layoutManager.getItemCount();
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
 
             }
+        };
 
-        });
+        recyclerView.addOnScrollListener(this.scrollListener);
 
         progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
         emptyStateTextView = (TextView) findViewById(R.id.empty_view);
