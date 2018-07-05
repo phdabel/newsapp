@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
                 @Override
                 public void onItemClick(NewsItem item) {
-                    Uri uri = Uri.parse(item.getUrl());
+                    Uri uri = Uri.parse(item.url);
                     Intent siteIntent = new Intent(Intent.ACTION_VIEW, uri);
                     startActivity(siteIntent);
                 }

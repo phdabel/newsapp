@@ -14,15 +14,7 @@ public abstract class Model<T> implements Serializable {
 
     private static final String LOG_TAG = Model.class.getSimpleName();
 
-    protected T id;
-
-    public T getId(){
-        return this.id;
-    }
-
-    public void setId(T id){
-        this.id = id;
-    }
+    public T id;
 
     public JSONObject toJSON(){
 

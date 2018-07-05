@@ -52,10 +52,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
     @Override
     public void onBindViewHolder(NewsRecyclerAdapter.ViewHolder holder, int position) {
-        holder.title.setText(this.dataset.get(position).getTitle());
-        holder.author.setText(this.dataset.get(position).getAuthor());
-        holder.date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(this.dataset.get(position).getDate()));
-        holder.section.setText(this.dataset.get(position).getSection());
+        holder.title.setText(this.dataset.get(position).title);
+        holder.author.setText(this.dataset.get(position).author);
+        holder.date.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm").format(this.dataset.get(position).date));
+        holder.section.setText(this.dataset.get(position).section);
         holder.bind(dataset.get(position), listener);
     }
 

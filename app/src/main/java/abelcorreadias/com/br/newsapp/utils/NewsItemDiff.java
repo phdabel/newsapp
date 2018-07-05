@@ -27,7 +27,7 @@ public class NewsItemDiff extends DiffUtil.Callback {
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        return oldItems.get(oldItemPosition).getId() == newItems.get(newItemPosition).getId();
+        return oldItems.get(oldItemPosition).id == newItems.get(newItemPosition).id;
     }
 
     @Override
