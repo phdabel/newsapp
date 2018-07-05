@@ -132,7 +132,7 @@ public final class QueryUtils {
         } catch (ParseException e) {
             Log.e(LOG_TAG, "Problem parsing date from news item JSON results.", e);
         }
-
+        Log.w(LOG_TAG, newsItems.get(0).toJSON().toString());
         return newsItems;
     }
 

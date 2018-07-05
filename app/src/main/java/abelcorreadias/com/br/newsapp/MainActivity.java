@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -44,10 +45,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final String QUERY = "?q=video-games AND games AND videogames";
 
     // @todo change {p} to the page number
-    private static final String PAGE = "&page={p}";
+    private static final String PAGE = "&page=1";
 
     private static final String NEWS_REQUEST_URL =
-            URL_BASE+PATH+QUERY+CONTRIBUTOR+"&page=1"+API_KEY;
+            URL_BASE+PATH+QUERY+CONTRIBUTOR+PAGE+API_KEY;
 
     private NewsRecyclerAdapter adapter;
 
@@ -61,25 +62,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private EndlessRecyclerViewScrollListener scrollListener;
 
+    private RecyclerView.LayoutManager layoutManager;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        final RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
-
-        this.scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-
-            }
-        };
-
-        recyclerView.addOnScrollListener(this.scrollListener);
 
         progressBar = (ProgressBar) findViewById(R.id.loading_spinner);
         emptyStateTextView = (TextView) findViewById(R.id.empty_view);
@@ -102,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {
+        Log.w(LOG_TAG, "passei por aqui");
         return new NewsLoader(this, NEWS_REQUEST_URL);
     }
 
@@ -124,6 +119,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             });
         }
         recyclerView.setAdapter(adapter);
+
+        scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                getLoaderManager().restartLoader(NEWS_LOADER_ID, null, (MainActivity)view.getContext());
+                Log.w(LOG_TAG, NEWS_REQUEST_URL);
+            }
+        };
+
+        recyclerView.addOnScrollListener(this.scrollListener);
+
         adapter.notifyDataSetChanged();
 
     }

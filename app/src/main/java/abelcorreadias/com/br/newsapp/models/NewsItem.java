@@ -1,13 +1,11 @@
 package abelcorreadias.com.br.newsapp.models;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class NewsItem implements Serializable {
+public class NewsItem extends Model<String> {
 
     private static final String TAG = NewsItem.class.getSimpleName();
 
-    private String id;
     private String title;
     private String author;
     private Date date;
@@ -23,14 +21,6 @@ public class NewsItem implements Serializable {
         this.setDate(date);
         this.setSection(section);
         this.setUrl(url);
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -74,13 +64,13 @@ public class NewsItem implements Serializable {
     }
 
     public String toString(){
-        return TAG+"{" +
-                "id='" + this.id + "'" +
-                "title='" + this.title + "'" +
-                "author='" + this.author + "'" +
-                "date'" + this.date.toString() + "'" +
-                "section='" + this.section + "'" +
-                "url='" + this.url + "'" +
+        return TAG+"={\n" +
+                "id='" + this.id + "'\n" +
+                "title='" + this.title + "'\n" +
+                "author='" + this.author + "'\n" +
+                "date='" + this.date.toString() + "'\n" +
+                "section='" + this.section + "'\n" +
+                "url='" + this.url + "'\n" +
                 "}";
     }
 
