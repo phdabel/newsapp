@@ -16,6 +16,11 @@ public abstract class Model<T> implements Serializable {
 
     public T id;
 
+    /**
+     * Returns a JSON Object of the model.
+     *
+     * @return
+     */
     public JSONObject toJSON(){
 
         JSONObject result = new JSONObject();
@@ -58,6 +63,20 @@ public abstract class Model<T> implements Serializable {
 
     }
 
-    public abstract String toString();
+
+    /**
+     * Generic toString method.
+     *
+     * @return name of the class and its content.
+     */
+    public String toString(){
+
+        StringBuilder result = new StringBuilder();
+
+        result.append(getClass().getSimpleName()).append("=");
+        result.append("{\"id\":").append("\"").append(this.id.toString()).append("\",");
+        result.append(this.toJSON().toString());
+        return result.toString().replaceFirst(",\\{",",");
+    }
 
 }

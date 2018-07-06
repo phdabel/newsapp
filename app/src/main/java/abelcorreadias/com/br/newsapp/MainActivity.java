@@ -7,17 +7,11 @@ import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Slide;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,27 +22,12 @@ import abelcorreadias.com.br.newsapp.adapters.NewsRecyclerAdapter;
 import abelcorreadias.com.br.newsapp.listeners.EndlessRecyclerViewScrollListener;
 import abelcorreadias.com.br.newsapp.loaders.NewsLoader;
 import abelcorreadias.com.br.newsapp.models.NewsItem;
-import abelcorreadias.com.br.newsapp.utils.QueryUtils;
+import abelcorreadias.com.br.newsapp.network.Connection;
+
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<NewsItem>> {
 
     public static final String LOG_TAG = MainActivity.class.getSimpleName();
-
-    private static final String URL_BASE = "http://content.guardianapis.com/";
-
-    private static final String PATH = "search";
-
-    private static final String CONTRIBUTOR = "&show-tags=contributor";
-
-    private static final String API_KEY = "&api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
-
-    private static final String QUERY = "?q=video-games AND games AND videogames";
-
-    // @todo change {p} to the page number
-    private static final String PAGE = "&page=1";
-
-    private static final String NEWS_REQUEST_URL =
-            URL_BASE+PATH+QUERY+CONTRIBUTOR+PAGE+API_KEY;
 
     private NewsRecyclerAdapter adapter;
 
@@ -96,8 +75,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public Loader<List<NewsItem>> onCreateLoader(int id, Bundle args) {
-        Log.w(LOG_TAG, "passei por aqui");
-        return new NewsLoader(this, NEWS_REQUEST_URL);
+        return new NewsLoader(this, 1);
     }
 
     @Override
@@ -119,19 +97,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             });
         }
         recyclerView.setAdapter(adapter);
-
         scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                //List<NewsItem> moreNews = Connection.fetchNewsData(page+1);
+                //final int curSize = adapter.getItemCount();
+                //adapter.addAll(moreNews);
+                //adapter.notifyItemRangeInserted(curSize, adapter.getItemCount()-1);
+                /*view.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyItemRangeInserted(curSize, adapter.getItemCount()-1);
+                    }
+                });*/
+
                 getLoaderManager().restartLoader(NEWS_LOADER_ID, null, (MainActivity)view.getContext());
-                Log.w(LOG_TAG, NEWS_REQUEST_URL);
             }
         };
-
         recyclerView.addOnScrollListener(this.scrollListener);
-
         adapter.notifyDataSetChanged();
-
     }
 
     @Override

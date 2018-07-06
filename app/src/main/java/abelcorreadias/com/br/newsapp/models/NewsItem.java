@@ -21,15 +21,4 @@ public class NewsItem extends Model<String> {
         this.url = url;
     }
 
-    public String toString(){
-        return getClass().getSimpleName()+"={\n" +
-                "id='" + this.id + "'\n" +
-                "title='" + this.title + "'\n" +
-                "author='" + this.author + "'\n" +
-                "date='" + this.date.toString() + "'\n" +
-                "section='" + this.section + "'\n" +
-                "url='" + this.url + "'\n" +
-                "}";
-    }
-
 }

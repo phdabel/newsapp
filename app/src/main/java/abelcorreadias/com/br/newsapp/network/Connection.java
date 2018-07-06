@@ -1,4 +1,4 @@
-package abelcorreadias.com.br.newsapp.utils;
+package abelcorreadias.com.br.newsapp.network;
 
 import android.util.Log;
 
@@ -21,39 +21,76 @@ import java.util.Date;
 
 import abelcorreadias.com.br.newsapp.models.NewsItem;
 
-public final class QueryUtils {
+public final class Connection {
 
-    public static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    public static final String LOG_TAG = Connection.class.getSimpleName();
 
-    private QueryUtils(){}
+    private static final Connection instance = new Connection();
 
-    public static ArrayList<NewsItem> fetchNewsData(String requestUrl){
+    private static final String URL_BASE = "http://content.guardianapis.com/";
 
-        URL url = createUrl(requestUrl);
+    private static final String PATH = "search";
+
+    private static final String CONTRIBUTOR = "&show-tags=contributor";
+
+    private static final String API_KEY = "&api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
+
+    private static final String QUERY = "?q=video-games AND games AND videogames";
+
+    private static final String PAGE = "&page={p}";
+
+    private static final String NEWS_REQUEST_URL =
+            URL_BASE+PATH+QUERY+CONTRIBUTOR+PAGE+API_KEY;
+
+    private Connection(){}
+
+    public static Connection getInstance(){
+        return instance;
+    }
+
+
+    /**
+     * Fetch news data from the request
+     *
+     * @param page
+     * @return
+     */
+    public static ArrayList<NewsItem> fetchNewsData(int page) {
+
+        URL url = createURL(page);
         String jsonResponse = null;
-        try{
+        try {
             jsonResponse = makeHttpRequest(url);
-        }catch(IOException e){
-            Log.e(LOG_TAG, "Error closing input stream.", e);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error closing input stream.",e);
         }
-
         return extractNewsFromJSON(jsonResponse);
-
     }
 
     /**
-     * Returns new URL object from the given string URL.
+     * Receives the page number and creates the URL request.
+     *
+     * @param page
+     * @return
      */
-    private static URL createUrl(String stringUrl) {
+    private static URL createURL(int page) {
         URL url = null;
+        String uriRequest = NEWS_REQUEST_URL.replace("{p}",String.valueOf(page));
         try {
-            url = new URL(stringUrl);
+            url = new URL(uriRequest);
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Error with creating URL ", e);
+            e.printStackTrace();
         }
         return url;
     }
 
+    /**
+     * Receives the URL, performs the request and returns the response data.
+     *
+     * @param url
+     * @return
+     * @throws IOException
+     */
     private static String makeHttpRequest(URL url) throws IOException {
         String jsonResponse = "";
 
@@ -62,7 +99,7 @@ public final class QueryUtils {
         HttpURLConnection urlConnection = null;
         InputStream inputStream = null;
 
-        try{
+        try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setReadTimeout(10000);
             urlConnection.setConnectTimeout(15000);
@@ -73,12 +110,13 @@ public final class QueryUtils {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             }else{
-                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+                Log.e(LOG_TAG, "Error response code: "+urlConnection.getResponseCode());
             }
+        } catch(IOException e) {
+            Log.e(LOG_TAG, "Problem retrieving the JSON result.", e);
+            e.printStackTrace();
 
-        }catch (IOException e){
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
-        }finally {
+        } finally {
             if(urlConnection != null) urlConnection.disconnect();
             if(inputStream != null) inputStream.close();
         }
@@ -89,6 +127,10 @@ public final class QueryUtils {
     /**
      * Convert the {@link InputStream} into a String which contains the
      * whole JSON response from the server.
+     *
+     * @param inputStream
+     * @return
+     * @throws IOException
      */
     private static String readFromStream(InputStream inputStream) throws IOException {
         StringBuilder output = new StringBuilder();
@@ -104,7 +146,13 @@ public final class QueryUtils {
         return output.toString();
     }
 
-    public static ArrayList<NewsItem> extractNewsFromJSON(String response){
+    /**
+     * Extract news from the json response.
+     *
+     * @param response
+     * @return
+     */
+    private static ArrayList<NewsItem> extractNewsFromJSON(String response){
 
         ArrayList<NewsItem> newsItems = new ArrayList<>();
 
@@ -132,7 +180,7 @@ public final class QueryUtils {
         } catch (ParseException e) {
             Log.e(LOG_TAG, "Problem parsing date from news item JSON results.", e);
         }
-        Log.w(LOG_TAG, newsItems.get(0).toJSON().toString());
+        Log.w(LOG_TAG, newsItems.get(0).toString());
         return newsItems;
     }
 

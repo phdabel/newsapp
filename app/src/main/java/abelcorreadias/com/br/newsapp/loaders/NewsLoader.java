@@ -6,24 +6,23 @@ import android.content.Context;
 import java.util.List;
 
 import abelcorreadias.com.br.newsapp.models.NewsItem;
-import abelcorreadias.com.br.newsapp.utils.QueryUtils;
+import abelcorreadias.com.br.newsapp.network.Connection;
 
 public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
 
     private static final String LOG_TAG = NewsLoader.class.getSimpleName();
 
-    private String mUrl;
+    private int page;
 
-    public NewsLoader(Context context, String url) {
+    public NewsLoader(Context context, int page) {
         super(context);
-        this.mUrl = url;
+        this.page = page;
     }
 
 
     @Override
     public List<NewsItem> loadInBackground() {
-        if(mUrl == null) return null;
-        return QueryUtils.fetchNewsData(this.mUrl);
+        return Connection.fetchNewsData(1);
     }
 
     @Override
