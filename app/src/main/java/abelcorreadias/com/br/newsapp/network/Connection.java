@@ -1,5 +1,9 @@
 package abelcorreadias.com.br.newsapp.network;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -19,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import abelcorreadias.com.br.newsapp.R;
 import abelcorreadias.com.br.newsapp.models.NewsItem;
 
 public final class Connection {
@@ -31,21 +36,32 @@ public final class Connection {
 
     private static final String PATH = "search";
 
+    private static final String QUERY = "?q=video-games AND games AND videogames";
+
     private static final String CONTRIBUTOR = "&show-tags=contributor";
+
+    private static final String PAGE = "&page={p}";
 
     private static final String API_KEY = "&api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
 
-    private static final String QUERY = "?q=video-games AND games AND videogames";
-
-    private static final String PAGE = "&page={p}";
 
     private static final String NEWS_REQUEST_URL =
             URL_BASE+PATH+QUERY+CONTRIBUTOR+PAGE+API_KEY;
 
+    private static Context mContext;
+
+    private static SharedPreferences sharedPrefs;
+
     private Connection(){}
 
-    public static Connection getInstance(){
+    public static Connection getInstance(Context context){
+        mContext = context;
         return instance;
+    }
+
+    private static String getPreferences(String key, String value){
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return sharedPrefs.getString(key,value);
     }
 
 
@@ -55,7 +71,7 @@ public final class Connection {
      * @param page
      * @return
      */
-    public static ArrayList<NewsItem> fetchNewsData(int page) {
+    public ArrayList<NewsItem> fetchNewsData(int page) {
 
         URL url = createURL(page);
         String jsonResponse = null;
@@ -76,8 +92,25 @@ public final class Connection {
     private static URL createURL(int page) {
         URL url = null;
         String uriRequest = NEWS_REQUEST_URL.replace("{p}",String.valueOf(page));
+        Uri baseUri = Uri.parse(uriRequest);
+        Uri.Builder builder = baseUri.buildUpon();
+
+        String orderBy = getPreferences(
+                mContext.getString(R.string.settings_order_by_key),
+                mContext.getString(R.string.settings_order_by_default));
+
+        String section = getPreferences(
+                mContext.getString(R.string.settings_section_key),
+                mContext.getString(R.string.settings_section_default));
+        String anySection = mContext.getString(R.string.settings_section_any_value);
+
+        builder.appendQueryParameter("order-by",orderBy);
+        if(!section.equals(anySection)){
+            builder.appendQueryParameter("section",section);
+        }
+
         try {
-            url = new URL(uriRequest);
+            url = new URL(builder.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

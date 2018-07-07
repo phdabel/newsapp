@@ -14,15 +14,18 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
 
     private int page;
 
+    private Context context;
+
     public NewsLoader(Context context, int page) {
         super(context);
+        this.context = context;
         this.page = page;
     }
 
 
     @Override
     public List<NewsItem> loadInBackground() {
-        return Connection.fetchNewsData(1);
+        return Connection.getInstance(context).fetchNewsData(this.page);
     }
 
     @Override

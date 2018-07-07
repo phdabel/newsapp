@@ -1,4 +1,4 @@
-package abelcorreadias.com.br.newsapp;
+package abelcorreadias.com.br.newsapp.activities;
 
 import android.app.LoaderManager;
 import android.content.Context;
@@ -11,14 +11,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import abelcorreadias.com.br.newsapp.R;
 import abelcorreadias.com.br.newsapp.adapters.NewsRecyclerAdapter;
 import abelcorreadias.com.br.newsapp.listeners.EndlessRecyclerViewScrollListener;
 import abelcorreadias.com.br.newsapp.loaders.NewsLoader;
@@ -58,6 +60,23 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         setupConnectivity();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings){
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -102,8 +121,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Toast.makeText(MainActivity.this, "onLoadMore " + String.valueOf(page), Toast.LENGTH_SHORT).show();
-                //TODO: Trocar esse método por uma chamada do loader page+1... com esse reinicia sempre o loader e fica chamando a page 1 sempre.
+                //@todo: change this method to increment the page in the query
+                // Trocar esse método por uma chamada do loader page+1... com esse reinicia sempre o loader e fica chamando a page 1 sempre.
                 getLoaderManager().restartLoader(NEWS_LOADER_ID, null, (MainActivity) view.getContext());
             }
         };
