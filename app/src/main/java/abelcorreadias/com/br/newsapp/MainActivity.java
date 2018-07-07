@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     }
 
     @Override
-    public void onLoadFinished(Loader<List<NewsItem>> loader, List<NewsItem> data) {
+    public void onLoadFinished(final Loader<List<NewsItem>> loader, List<NewsItem> data) {
 
         progressBar.setVisibility(View.GONE);
         emptyStateTextView.setText(R.string.no_news_found);
@@ -100,17 +100,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         scrollListener = new EndlessRecyclerViewScrollListener((LinearLayoutManager) layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                //List<NewsItem> moreNews = Connection.fetchNewsData(page+1);
-                //final int curSize = adapter.getItemCount();
-                //adapter.addAll(moreNews);
+                /*
+                final int curSize = adapter.getItemCount();
+                adapter.addAll(moreNews);
                 //adapter.notifyItemRangeInserted(curSize, adapter.getItemCount()-1);
-                /*view.post(new Runnable() {
+                view.post(new Runnable() {
                     @Override
                     public void run() {
                         adapter.notifyItemRangeInserted(curSize, adapter.getItemCount()-1);
                     }
-                });*/
-
+                });
+                */
                 getLoaderManager().restartLoader(NEWS_LOADER_ID, null, (MainActivity)view.getContext());
             }
         };
