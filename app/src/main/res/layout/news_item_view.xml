@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/NewsItemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="left"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/news_title_text_view"
+        style="@style/NewsTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
         tools:text="Title of the news retrieved from the lkjlkjlkj dsfsfdsfsd" />
 
     <LinearLayout
@@ -28,37 +25,34 @@
 
             <TextView
                 android:id="@+id/lbl_section"
+                style="@style/SectionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:text="Section:"
-                android:textSize="12sp"
-                android:textStyle="bold" />
+                android:text="@string/section_label_text_view" />
 
             <TextView
                 android:id="@+id/news_section_text_view"
+                style="@style/TextGeneral"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
                 tools:text="Opinions" />
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/news_date_text_view"
+            style="@style/TextGeneralRightAlignment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="end"
-            android:textSize="12sp"
             tools:text="Feb, 2 2018 14:12" />
 
     </LinearLayout>
 
     <TextView
         android:id="@+id/news_author_text_view"
+        style="@style/TextGeneral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         tools:text="Fulano de Tal" />
 
 </LinearLayout>

@@ -10,8 +10,6 @@ public class NewsItem extends Model<String> {
     public String section;
     public String url;
 
-    public NewsItem(){}
-
     public NewsItem(String id, String title, String author, Date date, String section, String url){
         this.id = id;
         this.title = title;

@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import abelcorreadias.com.br.newsapp.BuildConfig;
 import abelcorreadias.com.br.newsapp.R;
 import abelcorreadias.com.br.newsapp.models.NewsItem;
 
@@ -36,17 +37,13 @@ public final class Connection {
 
     private static final String PATH = "search";
 
-    private static final String QUERY = "?q=video-games AND games AND videogames";
+    private static final String QUERY = "video-games AND games AND videogames";
 
-    private static final String CONTRIBUTOR = "&show-tags=contributor";
+    private static final String CONTRIBUTOR = "contributor";
 
-    private static final String PAGE = "&page={p}";
+    private static final int READ_TIMEOUT = 10000;
 
-    private static final String API_KEY = "&api-key=6e99811c-4ec5-4011-bb96-bab2c3feccc3";
-
-
-    private static final String NEWS_REQUEST_URL =
-            URL_BASE+PATH+QUERY+CONTRIBUTOR+PAGE+API_KEY;
+    private static final int CONNECT_TIMEOUT = 15000;
 
     private static Context mContext;
 
@@ -91,9 +88,14 @@ public final class Connection {
      */
     private static URL createURL(int page) {
         URL url = null;
-        String uriRequest = NEWS_REQUEST_URL.replace("{p}",String.valueOf(page));
-        Uri baseUri = Uri.parse(uriRequest);
+
+        Uri baseUri = Uri.parse(URL_BASE);
         Uri.Builder builder = baseUri.buildUpon();
+        builder.appendPath(PATH)
+                .appendQueryParameter("q",QUERY)
+                .appendQueryParameter("show-tags",CONTRIBUTOR)
+                .appendQueryParameter("page",String.valueOf(page))
+                .appendQueryParameter("api-key",BuildConfig.ApiKey);
 
         String orderBy = getPreferences(
                 mContext.getString(R.string.settings_order_by_key),
@@ -105,9 +107,8 @@ public final class Connection {
         String anySection = mContext.getString(R.string.settings_section_any_value);
 
         builder.appendQueryParameter("order-by",orderBy);
-        if(!section.equals(anySection)){
-            builder.appendQueryParameter("section",section);
-        }
+
+        if(!section.equals(anySection)) builder.appendQueryParameter("section",section);
 
         try {
             url = new URL(builder.toString());
@@ -134,8 +135,8 @@ public final class Connection {
 
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(15000);
+            urlConnection.setReadTimeout(READ_TIMEOUT);
+            urlConnection.setConnectTimeout(CONNECT_TIMEOUT);
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
@@ -213,7 +214,6 @@ public final class Connection {
         } catch (ParseException e) {
             Log.e(LOG_TAG, "Problem parsing date from news item JSON results.", e);
         }
-        Log.w(LOG_TAG, newsItems.get(0).toString());
         return newsItems;
     }
 

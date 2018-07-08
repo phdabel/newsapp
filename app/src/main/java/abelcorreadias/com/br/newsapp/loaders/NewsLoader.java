@@ -32,4 +32,5 @@ public class NewsLoader extends AsyncTaskLoader<List<NewsItem>> {
     protected void onStartLoading(){
         forceLoad();
     }
+
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsApp</string>
+    <string name="app_name">Game News</string>
 
     <string name="no_news_found">No news was found.</string>
     <string name="no_internet_connection">No internet connection.</string>
@@ -45,5 +45,6 @@
 
     <string name="settings_section_crosswords_label">Crosswords</string>
     <string name="settings_section_crosswords_value">crosswords</string>
+    <string name="section_label_text_view">Section:</string>
 
 </resources>

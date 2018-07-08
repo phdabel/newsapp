@@ -70,10 +70,10 @@ public class NewsRecyclerAdapter extends RecyclerView.Adapter<NewsRecyclerAdapte
 
         public ViewHolder(View itemView){
             super(itemView);
-            this.title = (TextView) itemView.findViewById(R.id.news_title_text_view);
-            this.author = (TextView) itemView.findViewById(R.id.news_author_text_view);
-            this.date = (TextView) itemView.findViewById(R.id.news_date_text_view);
-            this.section = (TextView) itemView.findViewById(R.id.news_section_text_view);
+            this.title = itemView.findViewById(R.id.news_title_text_view);
+            this.author = itemView.findViewById(R.id.news_author_text_view);
+            this.date = itemView.findViewById(R.id.news_date_text_view);
+            this.section = itemView.findViewById(R.id.news_section_text_view);
         }
 
         public void bind(final NewsItem item, final OnItemClickListener listener){
