@@ -16,6 +16,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -42,6 +44,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     private TextView emptyStateTextView;
 
+    private ImageView emptyStateImageView;
+
+    private LinearLayout emptyStateLinearLayout;
+
     private RecyclerView recyclerView;
 
     private EndlessRecyclerViewScrollListener scrollListener;
@@ -58,11 +64,16 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         recyclerView = findViewById(R.id.recycler_view);
         progressBar = findViewById(R.id.loading_spinner);
         emptyStateTextView = findViewById(R.id.empty_view);
+        emptyStateImageView = findViewById(R.id.empty_image);
+        emptyStateLinearLayout = findViewById(R.id.empty_layout);
 
         emptyStateTextView.setVisibility(View.GONE);
+        emptyStateImageView.setVisibility(View.GONE);
+
         recyclerView.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
 
+        emptyStateLinearLayout.setVisibility(View.VISIBLE);
         emptyStateTextView.setText(R.string.no_news_found);
 
         setupRecyclerview();
@@ -98,7 +109,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         progressBar.setVisibility(View.GONE);
         emptyStateTextView.setText(R.string.no_news_found);
         if (data != null && !data.isEmpty()) {
+
+            emptyStateLinearLayout.setVisibility(View.GONE);
             emptyStateTextView.setVisibility(View.GONE);
+            emptyStateImageView.setVisibility(View.GONE);
+
             recyclerView.setVisibility(View.VISIBLE);
             adapter.addAll(data);
             adapter.setOnItemClickListener(new NewsRecyclerAdapter.OnItemClickListener() {
@@ -113,7 +128,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             });
         }else{
             recyclerView.setVisibility(View.GONE);
+            emptyStateLinearLayout.setVisibility(View.VISIBLE);
             emptyStateTextView.setVisibility(View.VISIBLE);
+            emptyStateImageView.setVisibility(View.GONE);
         }
     }
 
@@ -122,6 +139,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         adapter = new NewsRecyclerAdapter(new ArrayList<NewsItem>());
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        setupConnectivity();
     }
 
     private void setupRecyclerview() {
@@ -158,6 +176,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             progressBar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             emptyStateTextView.setText(R.string.no_internet_connection);
+            emptyStateTextView.setVisibility(View.VISIBLE);
+            emptyStateImageView.setVisibility(View.VISIBLE);
+            emptyStateLinearLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -170,11 +191,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
             //hide the empty state text view
             emptyStateTextView.setVisibility(View.GONE);
+            emptyStateImageView.setVisibility(View.GONE);
+            emptyStateLinearLayout.setVisibility(View.GONE);
             //show loading indicator
             progressBar.setVisibility(View.VISIBLE);
             //restart the loader
             getLoaderManager().restartLoader(NEWS_LOADER_ID, null, this);
-
+            setupConnectivity();
         }
     }
 }

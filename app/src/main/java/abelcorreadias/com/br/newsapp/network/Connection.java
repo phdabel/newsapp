@@ -198,7 +198,7 @@ public final class Connection {
                 String id = news.getString("id");
                 String title = news.getString("webTitle");
                 JSONArray tags = news.getJSONArray("tags");
-                String author = "Anonymous";
+                String author = mContext.getString(R.string.anonymous_author_tag);
                 if(tags.length() > 0){
                     author = ((JSONObject)tags.get(0)).getString("webTitle");
                 }
